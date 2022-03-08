@@ -17,6 +17,14 @@ public class Filtering {
     @Test
     public void filter() throws Exception {
         List<Car> cars = MockData.getCars();
+        Predicate<Car> carPredicate = car -> car.getPrice() < 20_000;
+        Predicate<Car> yellow = car -> car.getColor().equals("Yellow");
+
+        List<Car> carLessThan20k = cars.stream()
+                .filter(carPredicate)
+                .filter(yellow)
+                .collect(Collectors.toList());
+        carLessThan20k.forEach(System.out::println);
     }
 
     @Test

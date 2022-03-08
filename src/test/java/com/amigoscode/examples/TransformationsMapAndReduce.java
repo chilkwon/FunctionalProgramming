@@ -10,13 +10,28 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class TransformationsMapAndReduce {
 
     @Test
     void yourFirstTransformationWithMap() throws IOException {
         List<Person> people = MockData.getPeople();
+        Predicate<Person> personPredicate = person -> person.getAge() > 20;
+
+        Function<Person, PersonDTO> personPersonDTOFunction = person ->
+                new PersonDTO(person.getId(), person.getFirstName(), person.getAge()
+                );
+        List<PersonDTO> dtos = people.stream()
+                .filter(personPredicate)
+                .map(personPersonDTOFunction)
+                .collect(Collectors.toList());
+        assertThat(people.size()).isEqualTo(dtos.size());
+        dtos.forEach(System.out::println);
+
     }
 
     @Test
